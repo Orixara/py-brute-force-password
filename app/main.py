@@ -40,12 +40,13 @@ def brute_force_password() -> None:
                 end = total_range if i == num_processes - 1 else start + chunk_size
                 futures.append(executor.submit(worker, start, end, remaining_hashes))
 
-        all_found = []
-        for future in as_completed(futures):
-            all_found.extend(future.result())
+            all_found = []
+            for future in as_completed(futures):
+                all_found.extend(future.result())
 
-            if len(all_found) >= 10:
-                break
+                if len(all_found) >= 10:
+                    remaining_hashes.clear()
+                    break
 
         assert len(all_found) == 10, f"Expected 10 passwords, found {len(all_found)}"
         assert len(set(all_found)) == 10, "Passwords are not unique!"
@@ -75,7 +76,7 @@ def worker(start: int, end: int, remaining_hashes) -> list:
         if hashed in local_hashes:
             found_passwords.append(password)
             local_hashes.remove(hashed)
-            del remaining_hashes[hashed]
+            remaining_hashes.pop(hashed, None)
 
     return found_passwords
 
