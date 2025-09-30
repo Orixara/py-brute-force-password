@@ -57,7 +57,6 @@ def brute_force_password() -> None:
         for password in sorted(all_found):
             print(password)
 
-
 def worker(start: int, end: int, remaining_hashes) -> list:
     found_passwords = []
 
@@ -79,7 +78,6 @@ def worker(start: int, end: int, remaining_hashes) -> list:
             del remaining_hashes[hashed]
 
     return found_passwords
-
 
 
 if __name__ == "__main__":
